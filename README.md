@@ -127,12 +127,33 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Kolom Input -->
-            <div class="space-y-6">
+            <div id="input-column" class="space-y-6">
+                <!-- Pengaturan Utama -->
+                <div id="main-settings-card" class="card">
+                    <h3 class="text-xl font-bold mb-4">Pengaturan Utama</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="model-select" class="font-semibold mb-2 block">Model AI</label>
+                            <select id="model-select" class="form-select">
+                                <option>Gemini 1.5 Pro</option>
+                                <option>Midjourney v6</option>
+                                <option>DALL-E 3</option>
+                                <option>Stable Diffusion XL</option>
+                                <option>Google Veo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="style-input" class="font-semibold mb-2 block">Gaya Visual</label>
+                            <input id="style-input" type="text" placeholder="Cth: Sinematik, Foto Realistis, Anime" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Karakter -->
-                <div class="card">
+                <div id="character-card" class="card">
                     <h3 class="text-xl font-bold mb-4">Karakter</h3>
                     <div id="character-container" class="space-y-4">
-                        <div class="character-card sub-card">
+                        <div class="character-instance sub-card">
                             <h4 class="font-semibold mb-2 text-lg">Karakter 1</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" placeholder="Nama" class="form-input char-name">
@@ -150,7 +171,7 @@
                 </div>
 
                 <!-- Lokasi -->
-                <div class="card">
+                <div id="location-card" class="card">
                     <h3 class="text-xl font-bold mb-4">Lokasi</h3>
                     <div class="space-y-4">
                         <textarea class="form-textarea" rows="3" placeholder="Deskripsikan detail tempat..."></textarea>
@@ -187,10 +208,10 @@
                 </div>
                 
                 <!-- Adegan -->
-                <div class="card">
+                <div id="scene-card" class="card">
                     <h3 class="text-xl font-bold mb-4">Adegan</h3>
                     <div id="scene-container" class="space-y-4">
-                        <div class="scene-card sub-card">
+                        <div class="scene-instance sub-card">
                              <h4 class="font-semibold mb-2 text-lg">Adegan 1</h4>
                              <div class="space-y-4">
                                 <textarea class="form-textarea" rows="3" placeholder="Deskripsikan adegan..."></textarea>
@@ -223,7 +244,7 @@
                 </div>
 
                 <!-- Detail Tambahan -->
-                 <div class="card">
+                 <div id="details-card" class="card">
                     <h3 class="text-xl font-bold mb-4">Detail Tambahan</h3>
                     <div class="space-y-4">
                         <div class="p-2 border border-dashed border-gray-500 rounded-lg">
@@ -279,7 +300,7 @@
                 </div>
                 
                 <!-- Info Card -->
-                <div class="card">
+                <div id="info-card" class="card">
                     <h3 class="text-xl font-bold mb-4">Info Pembuat</h3>
                     <p class="text-gray-300 mb-4">Aplikasi ini dibuat oleh Surya Ishwara.</p>
                     <a href="https://www.tiktok.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full">
@@ -323,13 +344,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Character elements
     const addCharacterBtn = document.getElementById('add-character-btn');
     const characterContainer = document.getElementById('character-container');
-    const characterCardTemplate = characterContainer.querySelector('.character-card').cloneNode(true);
+    const characterCardTemplate = characterContainer.querySelector('.character-instance').cloneNode(true);
     let characterCount = 1;
 
     // Scene elements
     const addSceneBtn = document.getElementById('add-scene-btn');
     const sceneContainer = document.getElementById('scene-container');
-    const sceneCardTemplate = sceneContainer.querySelector('.scene-card').cloneNode(true);
+    const sceneCardTemplate = sceneContainer.querySelector('.scene-instance').cloneNode(true);
     let sceneCount = 1;
     
     // Output elements
@@ -337,39 +358,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const outputPrompt = document.getElementById('output-prompt');
     const copyBtn = document.getElementById('copy-btn');
     const copyFeedback = document.getElementById('copy-feedback');
+    
+    // Input Card Wrappers
+    const mainSettingsCard = document.getElementById('main-settings-card');
+    const characterCard = document.getElementById('character-card');
+    const locationCard = document.getElementById('location-card');
+    const sceneCard = document.getElementById('scene-card');
+    const detailsCard = document.getElementById('details-card');
 
     // --- INITIALIZATION FLOW ---
 
     // Check if the user has already confirmed following
     if (localStorage.getItem('hasConfirmedFollow') === 'true') {
-        // If yes, show the landing screen directly
         landingScreen.classList.remove('hidden');
         landingScreen.classList.add('flex');
     } else {
-        // If no, show the follow modal
         followModal.classList.remove('hidden');
     }
 
     // --- EVENT LISTENERS ---
 
-    // Listener for the "Saya Sudah Follow" button
     confirmFollowBtn.addEventListener('click', () => {
-        // Save the confirmation to localStorage
         localStorage.setItem('hasConfirmedFollow', 'true');
-        // Hide the modal and show the landing screen
         followModal.classList.add('hidden');
         landingScreen.classList.remove('hidden');
         landingScreen.classList.add('flex');
     });
     
-    // Switch from landing to main app
     startBtn.addEventListener('click', () => {
         landingScreen.classList.add('hidden');
         landingScreen.classList.remove('flex');
         appScreen.classList.remove('hidden');
     });
 
-    // Add new character
     addCharacterBtn.addEventListener('click', () => {
         if (characterCount >= 3) {
             alert("Maksimal 3 karakter.");
@@ -379,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const newCharacterCard = characterCardTemplate.cloneNode(true);
         newCharacterCard.querySelector('h4').textContent = `Karakter ${characterCount}`;
-        newCharacterCard.querySelectorAll('input').forEach(input => input.value = ''); // Clear fields
+        newCharacterCard.querySelectorAll('input').forEach(input => input.value = '');
         characterContainer.appendChild(newCharacterCard);
         
         if (characterCount === 3) {
@@ -389,9 +410,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCharacterDropdowns();
     });
 
-    // Add new scene
     addSceneBtn.addEventListener('click', () => {
-        if (sceneCount >= 5) { // Set max scenes to 5
+        if (sceneCount >= 5) {
             alert("Maksimal 5 adegan.");
             return;
         }
@@ -411,17 +431,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Listen for character name changes to update dropdowns
     characterContainer.addEventListener('keyup', (e) => {
         if (e.target.classList.contains('char-name')) {
             updateCharacterDropdowns();
         }
     });
 
-    // Generate Prompt
     generateBtn.addEventListener('click', generatePrompt);
 
-    // Copy to clipboard
     copyBtn.addEventListener('click', () => {
         if (!outputPrompt.value) return;
         outputPrompt.select();
@@ -449,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         [...expressionSelects, ...dialogSelects].forEach(select => {
             const currentVal = select.value;
-            select.innerHTML = '<option value="">-- Pilih Karakter --</option>'; // Clear existing
+            select.innerHTML = '<option value="">-- Pilih Karakter --</option>';
             charNames.forEach(name => {
                 const option = document.createElement('option');
                 option.value = name;
@@ -463,11 +480,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function generatePrompt() {
         let promptLines = [];
         
+        // --- PENGATURAN UTAMA ---
+        const model = mainSettingsCard.querySelector('#model-select').value;
+        const style = mainSettingsCard.querySelector('#style-input').value.trim();
+        promptLines.push(`Buat prompt untuk model ${model}.`);
+        if (style) {
+            promptLines.push(`Gaya visual: ${style}.`);
+        }
+        promptLines.push("---");
+
+
         // --- KARAKTER ---
-        const characterCards = document.querySelectorAll('.character-card');
-        if (characterCards.length > 0 && characterCards[0].querySelector('.char-name').value.trim()) {
+        const characterInstances = characterCard.querySelectorAll('.character-instance');
+        if (characterInstances.length > 0 && characterInstances[0].querySelector('.char-name').value.trim()) {
             promptLines.push("KARAKTER:");
-            characterCards.forEach((card, index) => {
+            characterInstances.forEach((card, index) => {
                 const fields = card.querySelectorAll('input');
                 let charDetails = `- Karakter ${index + 1}:`;
                 const details = [
@@ -488,9 +515,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- LOKASI ---
-        const locCard = document.querySelector('.card:nth-child(2)');
-        const locDesc = locCard.querySelector('textarea').value.trim();
-        const locSelects = locCard.querySelectorAll('select');
+        const locDesc = locationCard.querySelector('textarea').value.trim();
+        const locSelects = locationCard.querySelectorAll('select');
         const cuaca = locSelects[0].value;
         const situasi = locSelects[1].value;
         const nuansa = locSelects[2].value;
@@ -506,9 +532,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- ADEGAN ---
-        const sceneCards = document.querySelectorAll('.scene-card');
+        const sceneInstances = sceneCard.querySelectorAll('.scene-instance');
         const scenePromptLines = [];
-        sceneCards.forEach((card, index) => {
+        sceneInstances.forEach((card, index) => {
             const sceneDesc = card.querySelector('textarea').value.trim();
             if (!sceneDesc) return;
 
@@ -535,15 +561,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // --- DETAIL TAMBAHAN ---
-        const detailCard = document.querySelector('.card:nth-child(4)'); // Back to 4th card
-        const ekspresiDesc = detailCard.querySelector('div:nth-child(1) input[type="text"]').value.trim();
-        const ekspresiChar = detailCard.querySelector('div:nth-child(1) select').value;
-        const gesturDesc = detailCard.querySelector('div:nth-child(2) input[type="text"]').value.trim();
-        const dialogText = detailCard.querySelector('div:nth-child(3) textarea').value.trim();
-        const dialogLang = detailCard.querySelector('div:nth-child(3) select:nth-of-type(1)').value;
-        const dialogChar = detailCard.querySelector('div:nth-child(3) select:nth-of-type(2)').value;
-        const subId = detailCard.querySelector('input[value="sub-id"]').checked;
-        const subEn = detailCard.querySelector('input[value="sub-en"]').checked;
+        const ekspresiDesc = detailsCard.querySelector('div:nth-child(1) input[type="text"]').value.trim();
+        const ekspresiChar = detailsCard.querySelector('div:nth-child(1) select').value;
+        const gesturDesc = detailsCard.querySelector('div:nth-child(2) input[type="text"]').value.trim();
+        const dialogText = detailsCard.querySelector('div:nth-child(3) textarea').value.trim();
+        const dialogLang = detailsCard.querySelector('div:nth-child(3) select:nth-of-type(1)').value;
+        const dialogChar = detailsCard.querySelector('div:nth-child(3) select:nth-of-type(2)').value;
+        const subId = detailsCard.querySelector('input[value="sub-id"]').checked;
+        const subEn = detailsCard.querySelector('input[value="sub-en"]').checked;
         const hasDetails = ekspresiDesc || gesturDesc || dialogText || subId || subEn;
 
         if (hasDetails) {
