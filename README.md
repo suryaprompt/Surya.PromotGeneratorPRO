@@ -110,7 +110,7 @@
     </div>
 
     <!-- Landing Screen (Initially Hidden) -->
-    <div id="landing-screen" class="hidden min-h-screen flex-col items-center justify-center text-center p-4">
+    <div id="landing-screen" class="hidden min-h-screen items-center justify-center text-center p-4">
         <p class="text-xl md:text-2xl text-gray-300 mb-2">Kreasikan imajinasi dan idemu</p>
         <h1 class="text-4xl md:text-6xl font-black mb-8 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">Surya.PromptGeneratorPRO</h1>
         <button id="start-btn" class="btn btn-green text-2xl shadow-lg transform hover:scale-105">
@@ -368,10 +368,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION FLOW ---
 
+    // Function to show the landing screen
+    function showLandingScreen() {
+        landingScreen.classList.remove('hidden');
+        landingScreen.classList.add('flex', 'flex-col');
+    }
+
     // Check if the user has already confirmed following
     if (localStorage.getItem('hasConfirmedFollow') === 'true') {
-        landingScreen.classList.remove('hidden');
-        landingScreen.classList.add('flex');
+        showLandingScreen();
     } else {
         followModal.classList.remove('hidden');
     }
@@ -381,13 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmFollowBtn.addEventListener('click', () => {
         localStorage.setItem('hasConfirmedFollow', 'true');
         followModal.classList.add('hidden');
-        landingScreen.classList.remove('hidden');
-        landingScreen.classList.add('flex');
+        showLandingScreen();
     });
     
     startBtn.addEventListener('click', () => {
         landingScreen.classList.add('hidden');
-        landingScreen.classList.remove('flex');
+        landingScreen.classList.remove('flex', 'flex-col');
         appScreen.classList.remove('hidden');
     });
 
