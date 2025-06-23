@@ -74,7 +74,7 @@
         .modal-container {
             position: fixed;
             inset: 0;
-            background-color: rgba(0,0,0,0.75);
+            background-color: rgba(0,0,0,0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -90,21 +90,27 @@
             text-align: center;
             position: relative;
         }
-        .modal-close-btn {
-            position: absolute;
-            top: 0.75rem; /* top-3 */
-            right: 0.75rem; /* right-3 */
-            color: #9CA3AF; /* text-gray-400 */
-        }
-        .modal-close-btn:hover {
-             color: #FFFFFF; /* hover:text-white */
-        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
 
-    <!-- Landing Screen -->
-    <div id="landing-screen" class="min-h-screen flex flex-col items-center justify-center text-center p-4">
+    <!-- Follow Modal -->
+    <div id="follow-modal" class="hidden modal-container">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold mb-2">Akses Terbatas!</h3>
+            <p class="text-gray-300 mb-6">Untuk menggunakan tool ini, mohon follow TikTok kami terlebih dahulu. Terima kasih atas dukungannya!</p>
+            <a href="https://www.tiktok.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full mb-3">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                Follow TikTok
+            </a>
+            <button id="confirm-follow-btn" class="btn btn-green w-full">
+                Saya Sudah Follow
+            </button>
+        </div>
+    </div>
+
+    <!-- Landing Screen (Initially Hidden) -->
+    <div id="landing-screen" class="hidden min-h-screen flex-col items-center justify-center text-center p-4">
         <p class="text-xl md:text-2xl text-gray-300 mb-2">Kreasikan imajinasi dan idemu</p>
         <h1 class="text-4xl md:text-6xl font-black mb-8 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">Surya.PromptGeneratorPRO</h1>
         <button id="start-btn" class="btn btn-green text-2xl shadow-lg transform hover:scale-105">
@@ -117,12 +123,6 @@
     <div id="app-screen" class="hidden p-4 md:p-8 max-w-7xl mx-auto">
         <header class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold">Prompt Generator</h2>
-            <div class="flex items-center space-x-2">
-                <button id="info-btn" class="btn btn-gray">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    <span>Info</span>
-                </button>
-            </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -277,6 +277,15 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Info Card -->
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4">Info Pembuat</h3>
+                    <p class="text-gray-300 mb-4">Aplikasi ini dibuat oleh Surya Ishwara.</p>
+                    <a href="https://www.tiktok.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full">
+                        Kunjungi TikTok @surya.ishwara
+                    </a>
+                </div>
             </div>
 
             <!-- Kolom Output -->
@@ -302,23 +311,11 @@
         </div>
     </div>
 
-    <!-- Info Modal -->
-    <div id="info-modal" class="hidden modal-container">
-        <div class="modal-content">
-            <button id="close-info-modal-btn" class="modal-close-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <h3 class="text-2xl font-bold mb-4">Info Pembuat</h3>
-            <p class="text-gray-300 mb-4">Aplikasi ini dibuat oleh Surya Ishwara.</p>
-            <a href="https://www.tiktok.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full">
-                Kunjungi TikTok @surya.ishwara
-            </a>
-        </div>
-    </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENT SELECTIONS ---
+    const followModal = document.getElementById('follow-modal');
+    const confirmFollowBtn = document.getElementById('confirm-follow-btn');
     const landingScreen = document.getElementById('landing-screen');
     const appScreen = document.getElementById('app-screen');
     const startBtn = document.getElementById('start-btn');
@@ -341,16 +338,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copy-btn');
     const copyFeedback = document.getElementById('copy-feedback');
 
-    // Modal elements
-    const infoBtn = document.getElementById('info-btn');
-    const infoModal = document.getElementById('info-modal');
-    const closeModalBtn = document.getElementById('close-info-modal-btn');
+    // --- INITIALIZATION FLOW ---
+
+    // Check if the user has already confirmed following
+    if (localStorage.getItem('hasConfirmedFollow') === 'true') {
+        // If yes, show the landing screen directly
+        landingScreen.classList.remove('hidden');
+        landingScreen.classList.add('flex');
+    } else {
+        // If no, show the follow modal
+        followModal.classList.remove('hidden');
+    }
 
     // --- EVENT LISTENERS ---
+
+    // Listener for the "Saya Sudah Follow" button
+    confirmFollowBtn.addEventListener('click', () => {
+        // Save the confirmation to localStorage
+        localStorage.setItem('hasConfirmedFollow', 'true');
+        // Hide the modal and show the landing screen
+        followModal.classList.add('hidden');
+        landingScreen.classList.remove('hidden');
+        landingScreen.classList.add('flex');
+    });
     
     // Switch from landing to main app
     startBtn.addEventListener('click', () => {
         landingScreen.classList.add('hidden');
+        landingScreen.classList.remove('flex');
         appScreen.classList.remove('hidden');
     });
 
@@ -409,7 +424,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Copy to clipboard
     copyBtn.addEventListener('click', () => {
         if (!outputPrompt.value) return;
-        // Using document.execCommand for better iframe compatibility
         outputPrompt.select();
         try {
             document.execCommand('copy');
@@ -421,17 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Gagal menyalin: ', err);
             alert('Gagal menyalin teks.');
         }
-        // Deselect text
         window.getSelection().removeAllRanges();
-    });
-
-    // Modal controls
-    infoBtn.addEventListener('click', () => infoModal.classList.remove('hidden'));
-    closeModalBtn.addEventListener('click', () => infoModal.classList.add('hidden'));
-    infoModal.addEventListener('click', (e) => {
-        if (e.target === infoModal) {
-            infoModal.classList.add('hidden');
-        }
     });
 
     // --- FUNCTIONS ---
@@ -475,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fields[5].value.trim() ? `Kulit: ${fields[5].value.trim()}` : null,
                     fields[6].value.trim() ? `Mata: ${fields[6].value.trim()}` : null,
                     fields[7].value.trim() ? `Sifat: ${fields[7].value.trim()}` : null,
-                ].filter(Boolean); // Filter out empty details
+                ].filter(Boolean);
                 
                 if (details.length > 0) {
                      promptLines.push(`${charDetails} ${details.join(', ')}.`);
@@ -506,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const scenePromptLines = [];
         sceneCards.forEach((card, index) => {
             const sceneDesc = card.querySelector('textarea').value.trim();
-            if (!sceneDesc) return; // Skip empty scenes
+            if (!sceneDesc) return;
 
             const sceneInputs = card.querySelectorAll('input');
             const sceneStart = sceneInputs[0].value;
@@ -531,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // --- DETAIL TAMBAHAN ---
-        const detailCard = document.querySelector('.card:nth-child(4)');
+        const detailCard = document.querySelector('.card:nth-child(4)'); // Back to 4th card
         const ekspresiDesc = detailCard.querySelector('div:nth-child(1) input[type="text"]').value.trim();
         const ekspresiChar = detailCard.querySelector('div:nth-child(1) select').value;
         const gesturDesc = detailCard.querySelector('div:nth-child(2) input[type="text"]').value.trim();
