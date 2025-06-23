@@ -24,6 +24,10 @@
             border-color: #3B82F6; /* border-blue-500 */
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
         }
+        .form-textarea:disabled {
+            background-color: #374151;
+            cursor: not-allowed;
+        }
         .card {
             background-color: #374151; /* bg-gray-700 */
             border-radius: 0.75rem; /* rounded-xl */
@@ -54,6 +58,13 @@
         }
         .btn-blue:hover {
             background-color: #2563EB; /* bg-blue-600 */
+        }
+        .btn-red {
+            background-color: #EF4444; /* bg-red-500 */
+            color: white;
+        }
+        .btn-red:hover {
+            background-color: #DC2626; /* bg-red-600 */
         }
         .btn-gray {
              background-color: #4B5563; /* bg-gray-600 */
@@ -122,13 +133,18 @@
                             <h4 class="font-semibold mb-2 text-lg">Karakter 1</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" placeholder="Nama" class="form-input char-name">
+                                <select class="form-select char-gender">
+                                    <option value="">-- Pilih Gender --</option>
+                                    <option>Pria</option>
+                                    <option>Wanita</option>
+                                </select>
                                 <input type="number" placeholder="Umur" class="form-input">
                                 <input type="text" placeholder="Tinggi (cth: 175cm)" class="form-input">
                                 <input type="text" placeholder="Berat Badan (cth: 70kg)" class="form-input">
                                 <input type="text" placeholder="Style & Warna Rambut" class="form-input">
                                 <input type="text" placeholder="Warna Kulit (Rekomendasi Gemini)" class="form-input">
                                 <input type="text" placeholder="Warna Mata" class="form-input">
-                                <input type="text" placeholder="Sifat (Opsional)" class="form-input">
+                                <input type="text" placeholder="Sifat (Opsional)" class="form-input col-span-2">
                             </div>
                         </div>
                     </div>
@@ -172,80 +188,28 @@
                     </div>
                 </div>
                 
-                <!-- Adegan -->
-                <div id="scene-card" class="card">
-                    <h3 class="text-xl font-bold mb-4">Adegan</h3>
-                    <div id="scene-container" class="space-y-4">
-                        <div class="scene-instance sub-card">
-                             <h4 class="font-semibold mb-2 text-lg">Adegan 1</h4>
-                             <div class="space-y-4">
-                                <textarea class="form-textarea" rows="3" placeholder="Deskripsikan adegan..."></textarea>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input type="number" placeholder="Detik Mulai Adegan" class="form-input">
-                                    <input type="number" placeholder="Detik Akhir Adegan" class="form-input">
-                                </div>
-                                <select class="form-select">
-                                    <option value="">-- Pilih Angle Kamera --</option>
-                                    <option>Eye Level</option>
-                                    <option>High Angle</option>
-                                    <option>Low Angle</option>
-                                    <option>Dutch Angle</option>
-                                    <option>Over the Shoulder</option>
-                                    <option>Point of View (POV)</option>
-                                    <option>Wide Shot</option>
-                                    <option>Medium Shot</option>
-                                    <option>Close Up</option>
-                                    <option>Extreme Close Up</option>
-                                    <option value="rekomendasi">Rekomendasi Sesuai Adegan</option>
-                                </select>
-                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input type="number" placeholder="Detik Mulai Angle" class="form-input">
-                                    <input type="number" placeholder="Detik Akhir Angle" class="form-input">
-                                </div>
-                            </div>
-                        </div>
+                <!-- Timeline Adegan -->
+                <div id="timeline-card" class="card">
+                    <h3 class="text-xl font-bold mb-4">Timeline Adegan</h3>
+                    <div id="timeline-container" class="space-y-4">
+                        <!-- Adegan instances will be added here -->
                     </div>
-                     <button id="add-scene-btn" class="btn btn-blue mt-4">+ Tambah Adegan</button>
+                    <button id="add-scene-btn" class="btn btn-blue mt-4">+ Tambah Adegan</button>
                 </div>
-
-                <!-- Detail Tambahan -->
-                 <div id="details-card" class="card">
-                    <h3 class="text-xl font-bold mb-4">Detail Tambahan</h3>
+                
+                <!-- Dialog & Subtitle -->
+                 <div id="dialogs-card" class="card">
+                    <h3 class="text-xl font-bold mb-4">Dialog & Subtitle</h3>
                     <div class="space-y-4">
-                        <div class="p-2 border border-dashed border-gray-500 rounded-lg">
-                            <label class="font-semibold">Ekspresi</label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input type="text" placeholder="Deskripsi Ekspresi (cth: tersenyum tipis)" class="form-input">
-                                <select class="form-select expression-char-select"><option value="">-- Pilih Karakter --</option></select>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input type="number" placeholder="Detik Mulai" class="form-input">
-                                <input type="number" placeholder="Detik Akhir" class="form-input">
-                            </div>
-                        </div>
-                        <div class="p-2 border border-dashed border-gray-500 rounded-lg">
-                            <label class="font-semibold">Gestur</label>
-                            <input type="text" placeholder="Deskripsi Gestur (cth: mengangkat tangan)" class="form-input mt-2">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input type="number" placeholder="Detik Mulai" class="form-input">
-                                <input type="number" placeholder="Detik Akhir" class="form-input">
-                            </div>
-                        </div>
-                        <div class="p-2 border border-dashed border-gray-500 rounded-lg">
+                        <!-- Dialog Container -->
+                        <div id="dialog-section" class="p-2 border border-dashed border-gray-500 rounded-lg">
                             <label class="font-semibold">Dialog</label>
-                            <textarea class="form-textarea mt-2" rows="2" placeholder="Isi dialog..."></textarea>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <select class="form-select">
-                                    <option value="Indonesia">Bahasa Indonesia</option>
-                                    <option value="Inggris">Bahasa Inggris</option>
-                                </select>
-                                <select class="form-select dialog-char-select"><option value="">-- Pilih Karakter --</option></select>
+                            <div id="dialog-container" class="space-y-3 mt-2">
+                                <!-- Dialog instances will be added here -->
                             </div>
-                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input type="number" placeholder="Detik Mulai" class="form-input">
-                                <input type="number" placeholder="Detik Akhir" class="form-input">
-                            </div>
+                            <button id="add-dialog-btn" class="btn btn-blue mt-3 w-full text-sm">+ Tambah Dialog</button>
                         </div>
+                        <!-- Subtitle Section -->
                         <div class="flex items-center justify-between p-2">
                             <label class="font-semibold">Subtitle</label>
                             <div class="flex items-center space-x-4">
@@ -263,14 +227,54 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Audio & Backsound -->
+                <div id="audio-card" class="card">
+                    <h3 class="text-xl font-bold mb-4">Audio & Backsound</h3>
+                    <div class="space-y-4">
+                        <!-- Efek Suara (SFX) -->
+                        <div class="p-2 border border-dashed border-gray-500 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-semibold">Efek Suara (SFX)</label>
+                                <div class="flex items-center space-x-2">
+                                    <label for="sfx-auto" class="text-sm">Otomatis</label>
+                                    <input type="checkbox" id="sfx-auto" class="sfx-auto-checkbox h-5 w-5 rounded bg-gray-800 border-gray-600 text-blue-500 focus:ring-blue-600">
+                                </div>
+                            </div>
+                            <textarea class="sfx-desc-textarea form-textarea" rows="2" placeholder="Deskripsikan efek suara yang diinginkan... (Cth: suara langkah kaki, kicau burung, angin berdesir)"></textarea>
+                        </div>
+                        <!-- Musik Latar (Backsound) -->
+                        <div class="p-2 border border-dashed border-gray-500 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-semibold">Musik Latar (Backsound)</label>
+                                <div class="flex items-center space-x-2">
+                                    <label for="music-auto" class="text-sm">Otomatis</label>
+                                    <input type="checkbox" id="music-auto" class="music-auto-checkbox h-5 w-5 rounded bg-gray-800 border-gray-600 text-blue-500 focus:ring-blue-600">
+                                </div>
+                            </div>
+                            <textarea class="music-desc-textarea form-textarea" rows="2" placeholder="Deskripsikan genre atau nuansa musik... (Cth: musik orkestra tegang, lo-fi santai, gamelan jawa)"></textarea>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Info Card -->
                 <div id="info-card" class="card">
                     <h3 class="text-xl font-bold mb-4">Info Pembuat</h3>
                     <p class="text-gray-300 mb-4">Aplikasi ini dibuat oleh Surya Ishwara.</p>
-                    <a href="https://www.tiktok.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full">
-                        Kunjungi TikTok @surya.ishwara
-                    </a>
+                    <div class="space-y-3">
+                        <a href="https://www.tiktok.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                            Kunjungi TikTok
+                        </a>
+                         <a href="https://www.facebook.com/surya.ishwara" target="_blank" class="btn btn-blue w-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                            Kunjungi Facebook
+                        </a>
+                         <a href="https://www.youtube.com/@surya.ishwara" target="_blank" class="btn btn-blue w-full">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                            Kunjungi YouTube
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -296,6 +300,77 @@
             </div>
         </div>
     </div>
+    
+    <!-- TEMPLATES -->
+    <template id="scene-template">
+        <div class="scene-instance sub-card space-y-4">
+            <div class="flex justify-between items-start">
+                <h4 class="font-semibold text-lg">Adegan</h4>
+                <button type="button" class="remove-scene-btn btn btn-red btn-sm !p-1 !rounded-full w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <textarea class="scene-desc form-textarea" rows="3" placeholder="Deskripsikan adegan utamanya di sini..."></textarea>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="number" class="scene-start form-input" placeholder="Detik Mulai Adegan">
+                <input type="number" class="scene-end form-input" placeholder="Detik Akhir Adegan">
+            </div>
+            <div class="details-container border-t border-gray-600 pt-4 mt-4 space-y-3">
+                <!-- Detail instances (camera, gesture, etc.) will be added here -->
+            </div>
+            <button class="add-detail-btn btn btn-gray w-full text-sm">+ Tambah Detail di Adegan</button>
+        </div>
+    </template>
+
+    <template id="detail-template">
+        <div class="detail-instance p-2 border border-gray-600 rounded-lg space-y-2">
+             <div class="flex justify-between items-center">
+                <select class="detail-type-select form-select w-2/5">
+                    <option value="camera">Angle Kamera</option>
+                    <option value="expression">Ekspresi</option>
+                    <option value="gesture">Gestur</option>
+                </select>
+                <button type="button" class="remove-detail-btn btn btn-red btn-sm !p-1 !rounded-full w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="detail-fields">
+                <!-- Contextual fields will be injected here -->
+            </div>
+        </div>
+    </template>
+    
+    <template id="dialog-template">
+        <div class="dialog-instance p-2 border border-gray-700 rounded-lg">
+            <div class="flex justify-end mb-2">
+                <button type="button" class="remove-dialog-btn btn btn-red btn-sm !p-1 !rounded-full w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <textarea class="dialog-text form-textarea" rows="2" placeholder="Isi dialog..."></textarea>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                <select class="form-select dialog-lang">
+                    <option value="Indonesia">Bahasa Indonesia</option>
+                    <option value="Inggris">Bahasa Inggris</option>
+                </select>
+                <select class="form-select dialog-char-select"><option value="">-- Pilih Karakter --</option></select>
+                <select class="form-select dialog-tone">
+                    <option value="">-- Nada Suara --</option>
+                    <option>Biasa</option>
+                    <option>Senang</option>
+                    <option>Sedih</option>
+                    <option>Marah</option>
+                    <option>Berbisik</option>
+                    <option>Tegas</option>
+                    <option>Bingung</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <input type="number" placeholder="Detik Mulai" class="form-input">
+                <input type="number" placeholder="Detik Akhir" class="form-input">
+            </div>
+        </div>
+    </template>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -310,12 +385,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterCardTemplate = characterContainer.querySelector('.character-instance').cloneNode(true);
     let characterCount = 1;
 
-    // Scene elements
+    // Timeline/Scene elements
     const addSceneBtn = document.getElementById('add-scene-btn');
-    const sceneContainer = document.getElementById('scene-container');
-    const sceneCardTemplate = sceneContainer.querySelector('.scene-instance').cloneNode(true);
-    let sceneCount = 1;
+    const timelineContainer = document.getElementById('timeline-container');
+    const sceneTemplate = document.getElementById('scene-template');
+    const detailTemplate = document.getElementById('detail-template');
     
+    // Dialog elements
+    const addDialogBtn = document.getElementById('add-dialog-btn');
+    const dialogContainer = document.getElementById('dialog-container');
+    const dialogTemplate = document.getElementById('dialog-template');
+
+    // Audio elements
+    const audioCard = document.getElementById('audio-card');
+
     // Output elements
     const generateBtn = document.getElementById('generate-btn');
     const outputPrompt = document.getElementById('output-prompt');
@@ -326,8 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainSettingsCard = document.getElementById('main-settings-card');
     const characterCard = document.getElementById('character-card');
     const locationCard = document.getElementById('location-card');
-    const sceneCard = document.getElementById('scene-card');
-    const detailsCard = document.getElementById('details-card');
+    const dialogsCard = document.getElementById('dialogs-card');
 
     // --- EVENT LISTENERS ---
     
@@ -345,7 +427,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const newCharacterCard = characterCardTemplate.cloneNode(true);
         newCharacterCard.querySelector('h4').textContent = `Karakter ${characterCount}`;
-        newCharacterCard.querySelectorAll('input').forEach(input => input.value = '');
+        newCharacterCard.querySelectorAll('input, select').forEach(el => {
+            if(el.tagName === 'SELECT') el.selectedIndex = 0;
+            else el.value = '';
+        });
         characterContainer.appendChild(newCharacterCard);
         
         if (characterCount === 3) {
@@ -356,29 +441,73 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     addSceneBtn.addEventListener('click', () => {
-        if (sceneCount >= 5) {
-            alert("Maksimal 5 adegan.");
+        const sceneCount = timelineContainer.children.length;
+        if (sceneCount >= 10) { // Example limit
+            alert("Maksimal 10 adegan.");
             return;
         }
-        sceneCount++;
-        
-        const newSceneCard = sceneCardTemplate.cloneNode(true);
-        newSceneCard.querySelector('h4').textContent = `Adegan ${sceneCount}`;
-        newSceneCard.querySelectorAll('input, textarea, select').forEach(el => {
-            if (el.tagName === 'SELECT') el.selectedIndex = 0;
-            else el.value = '';
-        });
-        sceneContainer.appendChild(newSceneCard);
-        
-        if (sceneCount === 5) {
-            addSceneBtn.disabled = true;
-            addSceneBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        const newScene = sceneTemplate.content.cloneNode(true);
+        newScene.querySelector('h4').textContent = `Adegan ${sceneCount + 1}`;
+        timelineContainer.appendChild(newScene);
+    });
+
+    timelineContainer.addEventListener('click', e => {
+        if (e.target.closest('.remove-scene-btn')) {
+            e.target.closest('.scene-instance').remove();
+            // Re-number scenes
+            timelineContainer.querySelectorAll('h4').forEach((h4, index) => {
+                h4.textContent = `Adegan ${index + 1}`;
+            });
+        }
+        if (e.target.closest('.add-detail-btn')) {
+            const detailsContainer = e.target.closest('.scene-instance').querySelector('.details-container');
+            const newDetail = detailTemplate.content.cloneNode(true);
+            detailsContainer.appendChild(newDetail);
+            // Manually trigger change event to load initial fields
+            const newSelect = detailsContainer.lastElementChild.querySelector('.detail-type-select');
+            newSelect.dispatchEvent(new Event('change'));
+        }
+        if(e.target.closest('.remove-detail-btn')) {
+            e.target.closest('.detail-instance').remove();
+        }
+    });
+
+    timelineContainer.addEventListener('change', e => {
+        if (e.target.classList.contains('detail-type-select')) {
+            const detailFieldsContainer = e.target.closest('.detail-instance').querySelector('.detail-fields');
+            const type = e.target.value;
+            renderDetailFields(detailFieldsContainer, type);
         }
     });
     
+    addDialogBtn.addEventListener('click', () => {
+        const newDialog = dialogTemplate.content.cloneNode(true);
+        dialogContainer.appendChild(newDialog);
+        updateCharacterDropdowns();
+    });
+
+    dialogContainer.addEventListener('click', (e) => {
+        if (e.target.closest('.remove-dialog-btn')) {
+            e.target.closest('.dialog-instance').remove();
+        }
+    });
+
     characterContainer.addEventListener('keyup', (e) => {
         if (e.target.classList.contains('char-name')) {
             updateCharacterDropdowns();
+        }
+    });
+    
+    audioCard.addEventListener('change', (e) => {
+        if (e.target.classList.contains('sfx-auto-checkbox')) {
+            const textarea = audioCard.querySelector('.sfx-desc-textarea');
+            textarea.disabled = e.target.checked;
+            if (e.target.checked) textarea.value = '';
+        }
+        if (e.target.classList.contains('music-auto-checkbox')) {
+            const textarea = audioCard.querySelector('.music-desc-textarea');
+            textarea.disabled = e.target.checked;
+            if (e.target.checked) textarea.value = '';
         }
     });
 
@@ -401,15 +530,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- FUNCTIONS ---
+
+    function renderDetailFields(container, type) {
+        container.innerHTML = ''; // Clear previous fields
+        let fieldsHtml = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <input type="number" class="detail-start form-input" placeholder="Detik Mulai">
+                <input type="number" class="detail-end form-input" placeholder="Detik Akhir">
+            </div>`;
+
+        if (type === 'camera') {
+            fieldsHtml = `
+                <select class="detail-value form-select mt-2">
+                    <option>Eye Level</option>
+                    <option>High Angle</option>
+                    <option>Low Angle</option>
+                    <option>Dutch Angle</option>
+                    <option>Over the Shoulder</option>
+                    <option>Point of View (POV)</option>
+                    <option>Wide Shot</option>
+                    <option>Medium Shot</option>
+                    <option>Close Up</option>
+                    <option>Extreme Close Up</option>
+                </select>
+            ` + fieldsHtml;
+        } else if (type === 'expression') {
+            fieldsHtml = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <input type="text" class="detail-desc form-input" placeholder="Deskripsi Ekspresi">
+                    <select class="detail-char-select form-select expression-char-select"></select>
+                </div>
+            ` + fieldsHtml;
+        } else if (type === 'gesture') {
+            fieldsHtml = `
+                <input type="text" class="detail-desc form-input mt-2" placeholder="Deskripsi Gestur">
+            ` + fieldsHtml;
+        }
+        container.innerHTML = fieldsHtml;
+        updateCharacterDropdowns();
+    }
     
     function updateCharacterDropdowns() {
         const charNames = Array.from(document.querySelectorAll('.char-name'))
                                .map((input, index) => input.value.trim() || `Karakter Tanpa Nama ${index + 1}`);
 
-        const expressionSelects = document.querySelectorAll('.expression-char-select');
-        const dialogSelects = document.querySelectorAll('.dialog-char-select');
+        const allCharSelects = document.querySelectorAll('.expression-char-select, .dialog-char-select');
 
-        [...expressionSelects, ...dialogSelects].forEach(select => {
+        allCharSelects.forEach(select => {
             const currentVal = select.value;
             select.innerHTML = '<option value="">-- Pilih Karakter --</option>';
             charNames.forEach(name => {
@@ -434,23 +601,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         promptLines.push("---");
 
-
         // --- KARAKTER ---
         const characterInstances = characterCard.querySelectorAll('.character-instance');
         if (characterInstances.length > 0 && characterInstances[0].querySelector('.char-name').value.trim()) {
             promptLines.push("KARAKTER:");
             characterInstances.forEach((card, index) => {
-                const fields = card.querySelectorAll('input');
+                const inputs = card.querySelectorAll('input');
+                const gender = card.querySelector('.char-gender').value;
+
                 let charDetails = `- Karakter ${index + 1}:`;
                 const details = [
-                    fields[0].value.trim() ? `Nama: ${fields[0].value.trim()}` : null,
-                    fields[1].value.trim() ? `Umur: ${fields[1].value.trim()}` : null,
-                    fields[2].value.trim() ? `Tinggi: ${fields[2].value.trim()}` : null,
-                    fields[3].value.trim() ? `Berat: ${fields[3].value.trim()}` : null,
-                    fields[4].value.trim() ? `Rambut: ${fields[4].value.trim()}` : null,
-                    fields[5].value.trim() ? `Kulit: ${fields[5].value.trim()}` : null,
-                    fields[6].value.trim() ? `Mata: ${fields[6].value.trim()}` : null,
-                    fields[7].value.trim() ? `Sifat: ${fields[7].value.trim()}` : null,
+                    inputs[0].value.trim() ? `Nama: ${inputs[0].value.trim()}` : null,
+                    gender ? `Gender: ${gender}`: null,
+                    inputs[1].value.trim() ? `Umur: ${inputs[1].value.trim()}` : null,
+                    inputs[2].value.trim() ? `Tinggi: ${inputs[2].value.trim()}` : null,
+                    inputs[3].value.trim() ? `Berat: ${inputs[3].value.trim()}` : null,
+                    inputs[4].value.trim() ? `Rambut: ${inputs[4].value.trim()}` : null,
+                    inputs[5].value.trim() ? `Kulit: ${inputs[5].value.trim()}` : null,
+                    inputs[6].value.trim() ? `Mata: ${inputs[6].value.trim()}` : null,
+                    inputs[7].value.trim() ? `Sifat: ${inputs[7].value.trim()}` : null,
                 ].filter(Boolean);
                 
                 if (details.length > 0) {
@@ -476,70 +645,107 @@ document.addEventListener('DOMContentLoaded', () => {
             if (details.length > 0) promptLines.push(`- ${details.join(', ')}.`);
         }
 
-        // --- ADEGAN ---
-        const sceneInstances = sceneCard.querySelectorAll('.scene-instance');
-        const scenePromptLines = [];
-        sceneInstances.forEach((card, index) => {
-            const sceneDesc = card.querySelector('textarea').value.trim();
-            if (!sceneDesc) return;
+        // --- TIMELINE ADEGAN ---
+        const sceneInstances = timelineContainer.querySelectorAll('.scene-instance');
+        if (sceneInstances.length > 0) {
+            promptLines.push('\nTIMELINE ADEGAN:');
+            sceneInstances.forEach((scene, index) => {
+                const sceneDesc = scene.querySelector('.scene-desc').value.trim();
+                const sceneStart = scene.querySelector('.scene-start').value;
+                const sceneEnd = scene.querySelector('.scene-end').value;
+                let sceneHeader = `- Adegan ${index + 1}`;
+                if (sceneStart && sceneEnd) sceneHeader += ` [${sceneStart}s-${sceneEnd}s]`;
+                sceneHeader += sceneDesc ? `: ${sceneDesc}` : '';
+                promptLines.push(sceneHeader);
 
-            const sceneInputs = card.querySelectorAll('input');
-            const sceneStart = sceneInputs[0].value;
-            const sceneEnd = sceneInputs[1].value;
-            const cameraAngle = card.querySelector('select').value;
-            const angleStart = sceneInputs[2].value;
-            const angleEnd = sceneInputs[3].value;
-            
-            let sceneLine = `- Adegan ${index + 1}: ${sceneDesc}`;
-            if(sceneStart && sceneEnd) sceneLine += ` [${sceneStart}s-${sceneEnd}s]`;
-            scenePromptLines.push(sceneLine + ".");
+                const detailInstances = scene.querySelectorAll('.detail-instance');
+                detailInstances.forEach(detail => {
+                    const type = detail.querySelector('.detail-type-select').value;
+                    const start = detail.querySelector('.detail-start').value;
+                    const end = detail.querySelector('.detail-end').value;
+                    let detailLine = '  - ';
+                    if (start && end) detailLine += `[${start}s-${end}s] `;
 
-            let angleLineParts = [];
-            if(cameraAngle) angleLineParts.push(`Angle kamera: ${cameraAngle}`);
-            if(angleStart && angleEnd) angleLineParts.push(`[${angleStart}s-${angleEnd}s]`);
-            if (angleLineParts.length > 0) scenePromptLines.push(`  - ${angleLineParts.join(' ')}.`);
-        });
-
-        if (scenePromptLines.length > 0) {
-            promptLines.push("\nADEGAN:");
-            promptLines.push(...scenePromptLines);
+                    if (type === 'camera') {
+                        const value = detail.querySelector('.detail-value').value;
+                        detailLine += `Angle Kamera: ${value}.`;
+                    } else if (type === 'expression') {
+                        const desc = detail.querySelector('.detail-desc').value.trim();
+                        const char = detail.querySelector('.detail-char-select').value;
+                        if(desc && char) detailLine += `Ekspresi: ${char} ${desc}.`;
+                    } else if (type === 'gesture') {
+                        const desc = detail.querySelector('.detail-desc').value.trim();
+                        if(desc) detailLine += `Gestur: ${desc}.`;
+                    }
+                    if(detailLine.length > 5) promptLines.push(detailLine);
+                });
+            });
         }
         
-        // --- DETAIL TAMBAHAN ---
-        const ekspresiDesc = detailsCard.querySelector('div:nth-child(1) input[type="text"]').value.trim();
-        const ekspresiChar = detailsCard.querySelector('div:nth-child(1) select').value;
-        const gesturDesc = detailsCard.querySelector('div:nth-child(2) input[type="text"]').value.trim();
-        const dialogText = detailsCard.querySelector('div:nth-child(3) textarea').value.trim();
-        const dialogLang = detailsCard.querySelector('div:nth-child(3) select:nth-of-type(1)').value;
-        const dialogChar = detailsCard.querySelector('div:nth-child(3) select:nth-of-type(2)').value;
-        const subId = detailsCard.querySelector('input[value="sub-id"]').checked;
-        const subEn = detailsCard.querySelector('input[value="sub-en"]').checked;
-        const hasDetails = ekspresiDesc || gesturDesc || dialogText || subId || subEn;
-
-        if (hasDetails) {
-            promptLines.push("\nDETAIL TAMBAHAN:");
-        }
-
-        if (ekspresiDesc && ekspresiChar) {
-            promptLines.push(`- Ekspresi: ${ekspresiChar} ${ekspresiDesc}.`);
-        }
-        if (gesturDesc) {
-            promptLines.push(`- Gestur: ${gesturDesc}.`);
-        }
-        if (dialogText && dialogChar) {
-            promptLines.push(`- Dialog (${dialogLang}): ${dialogChar} berkata, "${dialogText}".`);
-        }
+        // --- DIALOG & SUBTITLE ---
+        const dialogLines = [];
+        const dialogInstances = dialogsCard.querySelectorAll('.dialog-instance');
+        dialogInstances.forEach(dialog => {
+            const dialogText = dialog.querySelector('.dialog-text').value.trim();
+            const dialogLang = dialog.querySelector('.dialog-lang').value;
+            const dialogChar = dialog.querySelector('.dialog-char-select').value;
+            const dialogTone = dialog.querySelector('.dialog-tone').value;
+            
+            if (dialogText && dialogChar) {
+                let dialogLine = `- (${dialogLang}) ${dialogChar} berkata`;
+                if (dialogTone && dialogTone !== 'Biasa') {
+                    dialogLine += ` dengan nada ${dialogTone.toLowerCase()}`;
+                }
+                dialogLine += `, "${dialogText}".`;
+                dialogLines.push(dialogLine);
+            }
+        });
+        
+        const subId = dialogsCard.querySelector('input[value="sub-id"]').checked;
+        const subEn = dialogsCard.querySelector('input[value="sub-en"]').checked;
         if (subId || subEn) {
             let subLangs = [];
             if(subId) subLangs.push("Indonesia");
             if(subEn) subLangs.push("Inggris");
-            if(subLangs.length > 0) promptLines.push(`- Subtitle: Aktif (${subLangs.join(" & ")}).`);
+            if(subLangs.length > 0) dialogLines.push(`- Subtitle: Aktif (${subLangs.join(" & ")}).`);
+        }
+        
+        if (dialogLines.length > 0) {
+            promptLines.push("\nDIALOG & SUBTITLE:");
+            promptLines.push(...dialogLines);
+        }
+        
+        // --- AUDIO & BACKSOUND ---
+        const sfxAuto = audioCard.querySelector('.sfx-auto-checkbox').checked;
+        const sfxDesc = audioCard.querySelector('.sfx-desc-textarea').value.trim();
+        const musicAuto = audioCard.querySelector('.music-auto-checkbox').checked;
+        const musicDesc = audioCard.querySelector('.music-desc-textarea').value.trim();
+
+        const audioLines = [];
+
+        if (sfxAuto) {
+            audioLines.push(`- Efek Suara (SFX): Rekomendasi otomatis sesuai adegan.`);
+        } else if (sfxDesc) {
+            audioLines.push(`- Efek Suara (SFX): ${sfxDesc}.`);
+        }
+
+        if (musicAuto) {
+            audioLines.push(`- Musik Latar: Rekomendasi otomatis sesuai nuansa.`);
+        } else if (musicDesc) {
+            audioLines.push(`- Musik Latar: ${musicDesc}.`);
+        }
+
+        if (audioLines.length > 0) {
+            promptLines.push("\nAUDIO & BACKSOUND:");
+            promptLines.push(...audioLines);
         }
 
         outputPrompt.value = promptLines.join('\n');
     }
     
-    // Initial call to populate dropdowns for the first character
+    // Initial call to populate dropdowns for the first character & add one dialog/scene box
+    addDialogBtn.click();
+    addSceneBtn.click();
     updateCharacterDropdowns();
 });
 </script>
